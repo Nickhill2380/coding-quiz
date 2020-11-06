@@ -2,6 +2,7 @@ var startQuizEl = document.getElementById('start-quiz');
 var quizAreaEl = document.getElementById('quiz-start');
 var sec = 75;
 var correctAnswer = "E";
+var pageWipe = document.getElementById('questions');
 
 
 
@@ -31,7 +32,19 @@ function timer() {
         sec--;
         if (sec < 0) {
             clearInterval(timer);
-            //also will need to add endgame function once we have it.
+            pageWipe.remove();
+            
+    
+            var scoreScreenEl =  document.createElement("div");
+            scoreScreenEl.className = "questions";
+
+            quizAreaEl.appendChild(scoreScreenEl);
+
+            var finishMessageEl = document.createElement("p")
+            finishMessageEl.textContent= "Congratulations, you have finished the quiz. You score is " + sec+".";
+            
+            scoreScreenEl.appendChild(finishMessageEl);
+            
         } 
     },1000);
 }
@@ -41,7 +54,7 @@ var startQuiz = function() {
     
     timer();
 
-    var pageWipe = document.getElementById('questions');
+    // var pageWipe = document.getElementById('questions');
     
     for ( var i =0; i < questions.length; i++){
         
@@ -87,7 +100,7 @@ var startQuiz = function() {
  
         correctAnswer = questions[i].answer;
         
-        
+       
         
     }
     //add endQuiz here
@@ -108,9 +121,6 @@ var startQuiz = function() {
 // when an answer is selected next question appears
 // when there are no more remaining questions quiz ends and score is giving, highscores are recorded
 // event listeners for start quiz, correct answer and wrong answers, and view high score
-
-
-
 
 
 startQuizEl.addEventListener("click", startQuiz);
