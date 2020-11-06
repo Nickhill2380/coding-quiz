@@ -1,7 +1,8 @@
 var startQuizEl = document.getElementById('start-quiz');
 var quizAreaEl = document.getElementById('quiz-start');
 var sec = 75;
-var questNumber = 0;
+var correctAnswer = "E";
+
 
 
 var questions =[
@@ -11,7 +12,6 @@ var questions =[
      choiceC: "alerts", 
      choiceD: "numbers",
      answer: "C",
-     selected:" "
     },
     {
         question: "The condition in an if/else statement is enclosed with _____",
@@ -19,8 +19,7 @@ var questions =[
         choiceB: "parethesis",
         choiceC: "curly brackets",
         choiceD: "square brackets",
-        answer: "B",
-        selected: " "
+        answer: "B", 
     },
 
 ];
@@ -33,7 +32,7 @@ function timer() {
         if (sec < 0) {
             clearInterval(timer);
             //also will need to add endgame function once we have it.
-        }
+        } 
     },1000);
 }
 
@@ -44,7 +43,6 @@ var startQuiz = function() {
 
     var pageWipe = document.getElementById('questions');
     
-
     for ( var i =0; i < questions.length; i++){
         
         pageWipe.remove();
@@ -55,90 +53,58 @@ var startQuiz = function() {
         quizAreaEl.appendChild(questionSectionEl);
 
     var questionEl = document.createElement("p");
-        questionEl.textContent = questions[questNumber].question;
+        questionEl.textContent = questions[i].question;
 
         questionSectionEl.appendChild(questionEl);
 
         var choiceAEl = document.createElement("button");
-        choiceAEl.textContent = questions[questNumber].choiceA;
+        choiceAEl.textContent = questions[i].choiceA;
         choiceAEl.className = "btn";
         choiceAEl.id = "A";
         
         questionSectionEl.appendChild(choiceAEl);
        
         var choiceBEl = document.createElement("button");
-        choiceBEl.textContent = questions[questNumber].choiceB;
+        choiceBEl.textContent = questions[i].choiceB;
         choiceBEl.className = "btn";
         choiceBEl.id = "B";
       
         questionSectionEl.appendChild(choiceBEl);
         
         var choiceCEl = document.createElement("button");
-        choiceCEl.textContent = questions[questNumber].choiceC;
+        choiceCEl.textContent = questions[i].choiceC;
         choiceCEl.className = "btn";
         choiceCEl.id = "C";
 
         questionSectionEl.appendChild(choiceCEl);
         
         var choiceDEl = document.createElement("button");
-        choiceDEl.textContent = questions[questNumber].choiceD;
+        choiceDEl.textContent = questions[i].choiceD;
         choiceDEl.className = "btn";
         choiceDEl.id = "D";
 
         questionSectionEl.appendChild(choiceDEl);
-
+ 
+        correctAnswer = questions[i].answer;
+        
+        
+        
     }
-
     //add endQuiz here
 };
 
 
-
-/*var questionAsker = function(questNumber) {
-
-    
-    var questionSectionEl = document.createElement("div")
-    questionSectionEl.className= "questions";
-
-    quizAreaEl.appendChild(questionSectionEl);
-
-    var questionEl = document.createElement("p");
-        questionEl.textContent = questions[questNumber].question;
-
-        questionSectionEl.appendChild(questionEl);
-
-        var choiceAEl = document.createElement("button");
-        choiceAEl.textContent = questions[questNumber].choiceA;
+   var checkAnswer = function (event) {
+        var userAnswer = event.target.getAttribute("id");
+        var questionAnswer = correctAnswer;
         
-
-        questionSectionEl.appendChild(choiceAEl);
-       
-        var choiceBEl = document.createElement("button");
-        choiceBEl.textContent = questions[questNumber].choiceB;
-      
+        if( userAnswer === questionAnswer) {
+              window.alert("correct")
+        } else{
+            sec = sec - 10;     
+        }
         
-        questionSectionEl.appendChild(choiceBEl);
-        
-        var choiceCEl = document.createElement("button");
-        choiceCEl.textContent = questions[questNumber].choiceC;
-        
-        
-
-        questionSectionEl.appendChild(choiceCEl);
-        
-        var choiceDEl = document.createElement("button");
-        choiceDEl.textContent = questions[questNumber].choiceD;
-        
-
-        questionSectionEl.appendChild(choiceDEl);
-        
-}*/
-
-
-    var checkAnswer = function (event) {
-        var answer = event.target.getAttribute("id");
-        
-    };
+    }; 
 // when an answer is selected next question appears
 // when there are no more remaining questions quiz ends and score is giving, highscores are recorded
 // event listeners for start quiz, correct answer and wrong answers, and view high score
