@@ -46,16 +46,14 @@ var questions =[
 
 ];
 
-
     var timer = setInterval(function() {},1000);
   
-
 //start function to start timer and pop up first question
 var startQuiz = function() {
     
         timer = setInterval(function() {
-            document.getElementById('timer').innerHTML= "Time: " +sec;
             sec--;
+            document.getElementById('timer').innerHTML= "Time: " +sec;
             if (sec < 0 ) {
                 clearInterval(timer);
                 
@@ -64,11 +62,9 @@ var startQuiz = function() {
             } 
                 
         },1000);
-
       
         pageWipe.remove();
 
-        
             questionSectionEl = document.createElement("div");
             questionSectionEl.className= "questions";
     
@@ -111,11 +107,9 @@ var startQuiz = function() {
 };
 
 var createQuestion = function() {
-
+            
             var i = userInput;
-            userResponse();
-    
-        function userResponse() {
+           
             if(i <questions.length){
             questionEl.textContent = questions[i].question;
 
@@ -128,21 +122,20 @@ var createQuestion = function() {
             choiceDEl.textContent = questions[i].choiceD;
      
             correctAnswer = questions[i].answer;
-            }
-           else{
+            } else {
+          
                
                endQuiz();
-           }
-        } 
-        
-    
-        
+            }
+      
+              
 };
 
 var endQuiz = function() {
     
-    //score keeps displaying the score being 1 less the timer.
-    score = sec + 1;
+    document.getElementById('timer').innerHTML= "Time: " +sec;
+
+    score = sec;
 
     questionEl.remove();
     choiceAEl.remove();
@@ -150,8 +143,7 @@ var endQuiz = function() {
     choiceCEl.remove();
     choiceDEl.remove();
     clearInterval(timer);
-  
-        
+      
     var scoreScreenEl =  document.createElement("div");
     scoreScreenEl.className = "questions";
 
@@ -161,21 +153,8 @@ var endQuiz = function() {
     finishMessageEl.textContent= "Congratulations, you have finished the quiz. Your score is " + score+".";
     
     scoreScreenEl.appendChild(finishMessageEl);
-    //sec= sec-sec;
-    
-    var initialsUserInput = prompt("Your score was " + score + " Please enter your intials");
-    
-    if (!initialsUserInput) {
-        alert("You need to submit your intials");
-        return false;
-    }
-
-    var playerInfo = {
-        initials: initialsUserInput,
-        highScore: score, 
-    }
-    
-    createScoreBoard(playerInfo);
+        
+    userPrompt(score);
 
 };
 
@@ -188,11 +167,27 @@ var checkAnswer = function (event) {
         sec = sec - 10;  
        
     } 
+    
     userInput ++;
-    console.log(userInput);
     createQuestion();
         
 };
+
+var userPrompt = function(score) {
+    
+    var initialsUserInput = prompt("Your score was " + score + " Please enter your intials");
+    if (!initialsUserInput) {
+        alert("You need to submit your intials");
+        userPrompt();
+    }
+
+    var playerInfo = {
+        initials: initialsUserInput,
+        highScore: score, 
+    }
+
+    createScoreBoard(playerInfo);
+}
 
 var saveHighScore = function() {
 
