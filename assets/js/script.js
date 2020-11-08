@@ -4,7 +4,6 @@ var sec = 75;
 var correctAnswer = "E";
 var pageWipe = document.getElementById('quiz-area');
 var inputCheckerEl = document.getElementById('question-area');
-// eventlistener for the click function of checking the user's answer counts starting the quiz as event and increase the counter skipping the first questions this is a work around for now
 var userInput = 0;
 var questionSectionEl = document.createElement("div");
 var questionEl = document.createElement("p");
@@ -54,7 +53,7 @@ var startQuiz = function() {
         timer = setInterval(function() {
             sec--;
             document.getElementById('timer').innerHTML= "Time: " +sec;
-            if (sec < 0 ) {
+            if (sec === 0 ) {
                 clearInterval(timer);
                 
                endQuiz();
@@ -133,7 +132,7 @@ var createQuestion = function() {
 
 var endQuiz = function() {
     
-    document.getElementById('timer').innerHTML= "Time: " +sec;
+    
 
     score = sec;
 
@@ -154,8 +153,7 @@ var endQuiz = function() {
     
     scoreScreenEl.appendChild(finishMessageEl);
         
-    userPrompt(score);
-
+    setTimeout(function() {userPrompt(score)},1);
 };
 
 var checkAnswer = function (event) {
@@ -165,9 +163,12 @@ var checkAnswer = function (event) {
     
     if( userAnswer !== questionAnswer) {
         sec = sec - 10;  
+        document.getElementById('timer').innerHTML= "Time: " +sec;
        
     } 
     
+    
+
     userInput ++;
     createQuestion();
         
@@ -181,7 +182,7 @@ var userPrompt = function(score) {
         userPrompt();
     }
 
-    var playerInfo = {
+   var playerInfo = {
         initials: initialsUserInput,
         highScore: score, 
     }
@@ -189,70 +190,58 @@ var userPrompt = function(score) {
     createScoreBoard(playerInfo);
 }
 
-var saveHighScore = function() {
-
-    currentScores = JSON.parse(localStorage.getItem("scores")) ;
-    if (currentScores === null) currentScores = [];
-    /*var currentInitials = document.getElementById("initials").value;
-    var currentHighScores = document.getElementById("highScore").value;
-    var standingInfo = {
-        "initials": currentInitials,
-        "scores": currentHighScores
-    };*/
-
-    //localStorage.setItem("scores",JSON.stringify(standingInfo));
-    
-   // currentScores.push(standingInfo);
-
+var saveHighScores =function() {
     localStorage.setItem("scores", JSON.stringify(currentScores));
+}
+
+var loadHighScores = function() {
+
+    var storedScores = (localStorage.getItem("scores"));
+
+    if (!currentScores ) {
     
-}
-
-
-
-var showHighScore = function(){
-
-    var getScores = localStorage.getItem("scores");
-
-    if (!currentScores) {
-        currentScores= [];
+        currentScores = [];
         return false;
-    }
+    };
 
-    getScores = JSON.parse(getScores);
-
-    for( var i = 0; i < getScores.length; i++) {
-            createScoreBoard(getScores[i]);
+    storedScores = JSON.parse(storedScores);
+    
+    for (var i = 0; i <storedScores.length; i ++) {
+        createScoreBoard(storedScores[i]);
     }
 
 }
+
+
+
 
  var createScoreBoard = function(playerInfo) {
+    
+  
+    var rankingsBoardEl = document.createElement("div");
+    rankingsBoardEl.className = "leaderboard";
+    rankingsBoardEl.innerHTML= "<h2 class='leaderheading'>Hall of Fame</h2>";
+    
 
     var rankingsEl = document.createElement("ol");
     rankingsEl.className = "rankings";
 
-    var rankingsBoardEl = document.createElement("div");
-    rankingsBoardEl.className = "leaderboard";
-
-    rankingsBoardEl.innerHTML= "<h2 class='leaderheading'>Hall of Fame</h2>";
     rankingsEl.appendChild(rankingsBoardEl);
 
     var positionEl = document.createElement("li");
     positionEl.className = "playerStanding";
-/*
-    var playerRankEl = playerInfo.initials;
-
-    positionEl.appendChild(playerRankEl);
-
+    positionEl.textContent= playerInfo.initials + playerInfo.score
     rankingsBoardEl.appendChild(positionEl);
 
-    currentScores.push(playerInfo);*/
 
-    saveHighScore();
+    currentScores.push(playerInfo);
+
+    saveHighScores();
     
  }
 
+
+ loadHighScores();
 
 startQuizEl.addEventListener("click", startQuiz);
 inputCheckerEl.addEventListener("click", checkAnswer);
