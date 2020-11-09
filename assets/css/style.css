@@ -4,9 +4,10 @@
 }
 
 :root {
-    --primary-color: red;
+    --primary-color: rgba(140,22,22);
     --secondary-color: black;
-    --tertiary-color: blue;
+    --tertiary-color: rgba(22,44,87);
+    --quaternary-color: gold;
 }
 
 body {
@@ -46,6 +47,7 @@ header {
 
 .btn:hover {
     background-color: var(--tertiary-color);
+    color: var(--quaternary-color);
 }
 
 .quiz-title {
@@ -57,3 +59,18 @@ header {
     color: var(--primary-color);
 }
 
+.rankings {
+    margin: auto;
+    text-align: center;
+
+}
+
+.leaderheading {
+    font-size: 50px;
+    color: var(--primary-color);
+}
+
+.playerStanding {
+    color: var (var(--primary-color));
+    font-size: 25px;
+}
